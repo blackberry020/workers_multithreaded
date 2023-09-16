@@ -5,12 +5,6 @@
 #include <iostream>
 #include <fstream>
 
-wchar_t* getFileName() {
-	wchar_t fileName[20];
-	std::wcin >> fileName;
-	return fileName;
-}
-
 wchar_t* charUnion(int cntArguments,...) {
 
 	va_list valist;
@@ -19,9 +13,7 @@ wchar_t* charUnion(int cntArguments,...) {
 	wchar_t mainString[100] = L"";
 
 	for (int i = 0; i < cntArguments; i++) {
-		//std::wcout << "entered" << std::endl;
 		wchar_t* curString = va_arg(valist, wchar_t*);
-		//std::wcout << curString << std::endl;
 		wcscat_s(mainString, curString);
 	}
 
@@ -37,7 +29,8 @@ wchar_t* charUnion(int cntArguments,...) {
 int main()
 {
 	std::wcout << "Enter the name of the creator file" << std::endl;
-	wchar_t* creatorFileName = getFileName();
+	wchar_t creatorFileName[20];
+	std::wcin >> creatorFileName;
 
 	wchar_t* commandLine;
 
