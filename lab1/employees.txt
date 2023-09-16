@@ -1,2 +1,2 @@
-1 Ilona 67
-2 Maria 90
+1 Ilona 3
+2 Maria 3

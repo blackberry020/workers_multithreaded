@@ -35,7 +35,7 @@ int main()
 		return 0;
 	}
 
-	WaitForSingleObject(&piCom, INFINITE);
+	WaitForSingleObject(piCom.hProcess, INFINITE);
 
 	// закрываем дескрипторы этого процесса
 	CloseHandle(piCom.hThread);
