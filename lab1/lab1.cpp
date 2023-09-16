@@ -1,33 +1,61 @@
 #include <windows.h>
 #include <conio.h>
+#include <stdarg.h>
 
 #include <iostream>
 #include <fstream>
 
+wchar_t* getFileName() {
+	wchar_t fileName[20];
+	std::wcin >> fileName;
+	return fileName;
+}
+
+wchar_t* charUnion(int cntArguments,...) {
+
+	va_list valist;
+	va_start(valist, cntArguments);
+
+	wchar_t mainString[40];
+
+	std::wcout << cntArguments << std::endl;
+
+	for (int i = 0; i < cntArguments; i++) {
+		std::wcout << "entered" << std::endl;
+		wcscat_s(mainString, va_arg(valist, const wchar_t*));
+	}
+
+	va_end(valist);
+
+	wchar_t* result = mainString;
+
+	std::wcout << result << std::endl;
+
+	return result;
+}
+
 int main()
 {
-	wchar_t creatorFileName[20];
 
 	std::wcout << "Enter the name of the creator file" << std::endl;
-	std::wcin >> creatorFileName;
+	wchar_t* creatorFileName = getFileName();
 
-	wchar_t lpszCommandLine[35] = L"Creator.exe ";
-	wcscat_s(lpszCommandLine, creatorFileName);
+	wchar_t* commandLine;
 
 	wchar_t cntEmployees[10] = L"";
-
 	std::wcout << "Enter the amount of employees" << std::endl;
 	std::wcin >> cntEmployees;
 
-	wcscat_s(lpszCommandLine, L" ");
-	wcscat_s(lpszCommandLine, cntEmployees);
+	commandLine = charUnion(4, L"Creator.exe ", creatorFileName, L" ", cntEmployees);
+
+	std::wcout << commandLine << std::endl;
 
 	STARTUPINFO si;
 	PROCESS_INFORMATION piCom;
 	ZeroMemory(&si, sizeof(STARTUPINFO));
 	si.cb = sizeof(STARTUPINFO);
 	
-	bool status = CreateProcessW(NULL, lpszCommandLine, NULL, NULL, FALSE,
+	bool status = CreateProcessW(NULL, commandLine, NULL, NULL, FALSE,
 		CREATE_NEW_CONSOLE, NULL, NULL, &si, &piCom);
 
 	if (!status) {
@@ -37,7 +65,6 @@ int main()
 
 	WaitForSingleObject(piCom.hProcess, INFINITE);
 
-	// закрываем дескрипторы этого процесса
 	CloseHandle(piCom.hThread);
 	CloseHandle(piCom.hProcess);
 
