@@ -16,13 +16,13 @@ wchar_t* charUnion(int cntArguments,...) {
 	va_list valist;
 	va_start(valist, cntArguments);
 
-	wchar_t mainString[40];
-
-	std::wcout << cntArguments << std::endl;
+	wchar_t mainString[100] = L"";
 
 	for (int i = 0; i < cntArguments; i++) {
-		std::wcout << "entered" << std::endl;
-		wcscat_s(mainString, va_arg(valist, const wchar_t*));
+		//std::wcout << "entered" << std::endl;
+		wchar_t* curString = va_arg(valist, wchar_t*);
+		//std::wcout << curString << std::endl;
+		wcscat_s(mainString, curString);
 	}
 
 	va_end(valist);
@@ -36,7 +36,6 @@ wchar_t* charUnion(int cntArguments,...) {
 
 int main()
 {
-
 	std::wcout << "Enter the name of the creator file" << std::endl;
 	wchar_t* creatorFileName = getFileName();
 
@@ -48,7 +47,7 @@ int main()
 
 	commandLine = charUnion(4, L"Creator.exe ", creatorFileName, L" ", cntEmployees);
 
-	std::wcout << commandLine << std::endl;
+	//std::wcout << commandLine << std::endl;
 
 	STARTUPINFO si;
 	PROCESS_INFORMATION piCom;
