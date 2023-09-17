@@ -1,16 +1,19 @@
 #include <iostream>
 #include <fstream>
+#include <algorithm>
+
+#include "../employee.h"
 
 int getLastSpaceIndex(char* row) {
     for (int i = strlen(row) - 1; i >= 0; i--) {
         if (row[i] == ' ') return i;
     }
 
-    return -1; // TODO exception
+    return -1;
 }
 
 double getLastNumber(char* row) {
-    char number[10];
+    char number[10] = {0};
     int numPos = getLastSpaceIndex(row);
     strncpy_s(number, row + numPos, strlen(row) - numPos + 1);
     return atof(number); //?
@@ -30,18 +33,22 @@ int main(int argc, char** args)
 
     fout << "Report on file " << args[2] << '\n';
 
-    int cntWorkers = atoi(args[3]);
-    double curHourCost;
-    double curWorkingHours;
-    char curRow[100];
+    const int cntWorkers = atoi(args[3]);
+    double hourCost;
 
-    std::cout << "Enter working hours for " << cntWorkers << " workers" << std::endl;
+    std::cout << "Enter the cost for 1 hour work" << std::endl;
+    std::cin >> hourCost;
+
+    Employee employees[105];
 
     for (int i = 0; i < cntWorkers; i++) {
-        fin.getline(curRow, 100);
-        curHourCost = getLastNumber(curRow);
-        std::cin >> curWorkingHours;
-        fout << curRow << " " << curHourCost * curWorkingHours << '\n';
+        fin >> employees[i];
+    }
+
+    std::sort(employees, employees + cntWorkers);
+
+    for (int i = 0; i < cntWorkers; i++) {
+        fout << employees[i] << " " << employees[i].hours * hourCost << '\n';
     }
 
     fin.close();

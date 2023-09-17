@@ -1,2 +1,4 @@
-1 Ilona 23 46
-2 Maria 12 24
+Report on file emploees.bin
+3 A 1 3
+2 B 2 6
+1 C 4 12

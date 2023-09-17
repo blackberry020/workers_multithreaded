@@ -19,7 +19,7 @@ int main(int argc, char** args)
 
     for (int i = 0; i < atoi(args[2]); i++) {
         std::cin >> curEmployee;
-        fout << curEmployee;
+        fout << curEmployee << '\n';
     }
 
     fout.close();
