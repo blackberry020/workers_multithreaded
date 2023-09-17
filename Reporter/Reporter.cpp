@@ -1,20 +1,51 @@
-// Reporter.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <fstream>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+int getLastSpaceIndex(char* row) {
+    for (int i = strlen(row) - 1; i >= 0; i--) {
+        if (row[i] == ' ') return i;
+    }
+
+    return -1; // TODO exception
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+double getLastNumber(char* row) {
+    char number[10];
+    int numPos = getLastSpaceIndex(row);
+    strncpy_s(number, row + numPos, strlen(row) - numPos + 1);
+    return atof(number); //?
+};
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+int main(int argc, char** args)
+{
+    std::cout << "Args amount: " << argc << std::endl << "Args: ";
+
+    for (int i = 0; i < argc; i++)
+        std::cout << args[i] << " ";
+
+    std::cout << std::endl;
+
+    std::ifstream fin(args[2]);
+    std::ofstream fout(args[1]);
+
+    fout << "Report on file " << args[2] << '\n';
+
+    int cntWorkers = atoi(args[3]);
+    double curHourCost;
+    double curWorkingHours;
+    char curRow[100];
+
+    std::cout << "Enter working hours for " << cntWorkers << " workers" << std::endl;
+
+    for (int i = 0; i < cntWorkers; i++) {
+        fin.getline(curRow, 100);
+        curHourCost = getLastNumber(curRow);
+        std::cin >> curWorkingHours;
+        fout << curRow << " " << curHourCost * curWorkingHours << '\n';
+    }
+
+    fin.close();
+    fout.close();
+
+    system("pause");
+}

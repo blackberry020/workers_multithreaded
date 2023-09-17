@@ -21,9 +21,11 @@ wchar_t* charUnion(int cntArguments,...) {
 
 	wchar_t* result = mainString;
 
-	std::wcout << result << std::endl;
-
 	return result;
+}
+
+void createProcess() {
+
 }
 
 int main()
@@ -32,15 +34,14 @@ int main()
 	wchar_t creatorFileName[20];
 	std::wcin >> creatorFileName;
 
-	wchar_t* commandLine;
-
 	wchar_t cntEmployees[10] = L"";
 	std::wcout << "Enter the amount of employees" << std::endl;
 	std::wcin >> cntEmployees;
 
-	commandLine = charUnion(4, L"Creator.exe ", creatorFileName, L" ", cntEmployees);
-
-	//std::wcout << commandLine << std::endl;
+	wchar_t commandLine[100] = L"Creator.exe ";
+	wcscat_s(commandLine, creatorFileName);
+	wcscat_s(commandLine, L" ");
+	wcscat_s(commandLine, cntEmployees);
 
 	STARTUPINFO si;
 	PROCESS_INFORMATION piCom;
@@ -63,12 +64,48 @@ int main()
 	char curRow[30];
 	std::ifstream fin(creatorFileName);
 
-	while (fin >> curRow) {
-		std::wcout << curRow;
+	while (fin.getline(curRow, 100)) {
+		std::wcout << curRow << std::endl;
 	}
 	fin.close();
 
-	_cputs("The new process is created.\n");
+	STARTUPINFO si2;
+	PROCESS_INFORMATION piCom2;
+	ZeroMemory(&si2, sizeof(STARTUPINFO));
+	si2.cb = sizeof(STARTUPINFO);
+
+	wchar_t reporterCommandLine[100] = L"Reporter.exe ";
+
+	std::wcout << "Enter the name of the reporter file" << std::endl;
+	wchar_t reporterFileName[20];
+	std::wcin >> reporterFileName;
+
+	wcscat_s(reporterCommandLine, reporterFileName);
+	wcscat_s(reporterCommandLine, L" ");
+	wcscat_s(reporterCommandLine, creatorFileName);
+	wcscat_s(reporterCommandLine, L" ");
+	wcscat_s(reporterCommandLine, cntEmployees);
+
+	status = CreateProcessW(NULL, reporterCommandLine, NULL, NULL, FALSE,
+		CREATE_NEW_CONSOLE, NULL, NULL, &si2, &piCom2);
+
+	if (!status) {
+		_cputs("did not create");
+		return 0;
+	}
+
+	WaitForSingleObject(piCom2.hProcess, INFINITE);
+
+	CloseHandle(piCom2.hThread);
+	CloseHandle(piCom2.hProcess);
+
+	fin.open(reporterFileName);
+
+	while (fin.getline(curRow, 100)) {
+		std::wcout << curRow << std::endl;
+	}
+	fin.close();
+
 	_cputs("Press any key to finish.\n");
 	_getch();
 	return 0;
