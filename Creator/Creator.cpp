@@ -5,12 +5,14 @@
 
 int main(int argc, char** args)
 {
-    std::cout << "Args amount: " << argc << std::endl << "Args: ";
+    //std::cout << "Args amount: " << argc << std::endl << "Args: ";
 
-    for (int i = 0; i < argc; i++)
+    /* for (int i = 0; i < argc; i++)
         std::cout << args[i] << " ";
+    */
+    //std::cout << std::endl;
 
-    std::cout << std::endl;
+    std::cout << "Enter info for " << args[2] << " empolyees (id, name, hours)" << std::endl;
 
     char* fileEmployees = args[1];
     Employee curEmployee;

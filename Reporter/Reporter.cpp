@@ -21,12 +21,14 @@ double getLastNumber(char* row) {
 
 int main(int argc, char** args)
 {
-    std::cout << "Args amount: " << argc << std::endl << "Args: ";
+    //std::cout << "Args amount: " << argc << std::endl << "Args: ";
 
-    for (int i = 0; i < argc; i++)
+    /* 
+        for (int i = 0; i < argc; i++)
         std::cout << args[i] << " ";
+    */
 
-    std::cout << std::endl;
+    //std::cout << std::endl;
 
     std::ifstream fin(args[2]);
     std::ofstream fout(args[1]);
