@@ -74,12 +74,11 @@ int main()
 	ZeroMemory(&si2, sizeof(STARTUPINFO));
 	si2.cb = sizeof(STARTUPINFO);
 
-	wchar_t reporterCommandLine[100] = L"Reporter.exe ";
-
 	std::wcout << "Enter the name of the reporter file" << std::endl;
 	wchar_t reporterFileName[20];
 	std::wcin >> reporterFileName;
 
+	wchar_t reporterCommandLine[100] = L"Reporter.exe ";
 	wcscat_s(reporterCommandLine, reporterFileName);
 	wcscat_s(reporterCommandLine, L" ");
 	wcscat_s(reporterCommandLine, creatorFileName);

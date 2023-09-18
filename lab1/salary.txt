@@ -1,4 +1,4 @@
 Report on file employees.bin
-3 A 12 276
-2 B 23 529
-1 C 34 782
+3 Afjkd 17 68
+2 Bsjfhsd 12 48
+1 Csdf 23 92
