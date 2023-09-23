@@ -1,6 +1,4 @@
 #include <windows.h>
-#include <conio.h>
-#include <stdarg.h>
 
 #include <iostream>
 #include <fstream>
@@ -31,6 +29,19 @@ void runProcess(wchar_t* command) {
 	return;
 }
 
+void printFileContent(std::wstring fileName) {
+
+	std::wstring curRow;
+	std::wifstream fin(fileName);
+
+	while (getline(fin, curRow)) {
+		std::wcout << curRow << std::endl;
+	}
+	fin.close();
+
+	return;
+}
+
 TEST() {
 
 };
@@ -55,13 +66,7 @@ int main(int argc, char** args)
 
 	runProcess(finalCommand);
 
-	std::wstring curRow;
-	std::wifstream fin(creatorFileName);
-
-	while (getline(fin, curRow)) {
-		std::wcout << curRow << std::endl;
-	}
-	fin.close();
+	printFileContent(creatorFileName);
 
 	std::wcout << "Enter the name of the reporter file" << std::endl;
 	std::wstring reporterFileName;
@@ -74,12 +79,7 @@ int main(int argc, char** args)
 
 	runProcess(finalCommand2);
 
-	fin.open(reporterFileName);
-
-	while (getline(fin, curRow)) {
-		std::wcout << curRow << std::endl;
-	}
-	fin.close();
+	printFileContent(reporterFileName);
 
 	system("pause");
 	return RUN_ALL_TESTS();
