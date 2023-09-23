@@ -1,4 +1,3 @@
 Report on file employees.bin
-3 Afjkd 17 68
-2 Bsjfhsd 12 48
-1 Csdf 23 92
+1 Ilona 23 529
+2 Maria 34 782

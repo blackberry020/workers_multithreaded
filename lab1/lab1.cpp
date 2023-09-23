@@ -4,56 +4,23 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 
-wchar_t* charUnion(int cntArguments,...) {
+#include <gtest/gtest.h>
 
-	va_list valist;
-	va_start(valist, cntArguments);
-
-	wchar_t mainString[100] = L"";
-
-	for (int i = 0; i < cntArguments; i++) {
-		wchar_t* curString = va_arg(valist, wchar_t*);
-		wcscat_s(mainString, curString);
-	}
-
-	va_end(valist);
-
-	wchar_t* result = mainString;
-
-	return result;
-}
-
-void createProcess() {
-
-}
-
-int main()
-{
-	std::wcout << "Enter the name of the creator file" << std::endl;
-	wchar_t creatorFileName[20];
-	std::wcin >> creatorFileName;
-
-	wchar_t cntEmployees[10] = L"";
-	std::wcout << "Enter the amount of employees" << std::endl;
-	std::wcin >> cntEmployees;
-
-	wchar_t commandLine[100] = L"Creator.exe ";
-	wcscat_s(commandLine, creatorFileName);
-	wcscat_s(commandLine, L" ");
-	wcscat_s(commandLine, cntEmployees);
+void runProcess(wchar_t* command) {
 
 	STARTUPINFO si;
 	PROCESS_INFORMATION piCom;
 	ZeroMemory(&si, sizeof(STARTUPINFO));
 	si.cb = sizeof(STARTUPINFO);
-	
-	bool status = CreateProcessW(NULL, commandLine, NULL, NULL, FALSE,
+
+	bool status = CreateProcessW(NULL, command, NULL, NULL, FALSE,
 		CREATE_NEW_CONSOLE, NULL, NULL, &si, &piCom);
 
 	if (!status) {
-		_cputs("did not create");
-		return 0;
+		std::wcout << "did not create";
+		exit(-1);
 	}
 
 	WaitForSingleObject(piCom.hProcess, INFINITE);
@@ -61,51 +28,59 @@ int main()
 	CloseHandle(piCom.hThread);
 	CloseHandle(piCom.hProcess);
 
-	char curRow[30];
-	std::ifstream fin(creatorFileName);
+	return;
+}
 
-	while (fin.getline(curRow, 100)) {
+TEST() {
+
+};
+
+int main(int argc, char** args)
+{
+
+	testing::InitGoogleTest(&argc, args);
+
+	std::wcout << "Enter the name of the creator file" << std::endl;
+	std::wstring creatorFileName;
+	std::wcin >> creatorFileName;
+
+	std::wstring cntEmployees;
+	std::wcout << "Enter the amount of employees" << std::endl;
+	std::wcin >> cntEmployees;
+
+	std::wstring commandLine = L"Creator.exe ";
+	commandLine += creatorFileName + L" " + cntEmployees;
+
+	wchar_t* finalCommand = _wcsdup(commandLine.c_str());
+
+	runProcess(finalCommand);
+
+	std::wstring curRow;
+	std::wifstream fin(creatorFileName);
+
+	while (getline(fin, curRow)) {
 		std::wcout << curRow << std::endl;
 	}
 	fin.close();
 
-	STARTUPINFO si2;
-	PROCESS_INFORMATION piCom2;
-	ZeroMemory(&si2, sizeof(STARTUPINFO));
-	si2.cb = sizeof(STARTUPINFO);
-
 	std::wcout << "Enter the name of the reporter file" << std::endl;
-	wchar_t reporterFileName[20];
+	std::wstring reporterFileName;
 	std::wcin >> reporterFileName;
 
-	wchar_t reporterCommandLine[100] = L"Reporter.exe ";
-	wcscat_s(reporterCommandLine, reporterFileName);
-	wcscat_s(reporterCommandLine, L" ");
-	wcscat_s(reporterCommandLine, creatorFileName);
-	wcscat_s(reporterCommandLine, L" ");
-	wcscat_s(reporterCommandLine, cntEmployees);
+	std::wstring reporterCommandLine = L"Reporter.exe ";
+	reporterCommandLine += reporterFileName + L" " + creatorFileName + L" " + cntEmployees;
 
-	status = CreateProcessW(NULL, reporterCommandLine, NULL, NULL, FALSE,
-		CREATE_NEW_CONSOLE, NULL, NULL, &si2, &piCom2);
+	wchar_t* finalCommand2 = _wcsdup(reporterCommandLine.c_str());
 
-	if (!status) {
-		_cputs("did not create");
-		return 0;
-	}
-
-	WaitForSingleObject(piCom2.hProcess, INFINITE);
-
-	CloseHandle(piCom2.hThread);
-	CloseHandle(piCom2.hProcess);
+	runProcess(finalCommand2);
 
 	fin.open(reporterFileName);
 
-	while (fin.getline(curRow, 100)) {
+	while (getline(fin, curRow)) {
 		std::wcout << curRow << std::endl;
 	}
 	fin.close();
 
-	_cputs("Press any key to finish.\n");
-	_getch();
-	return 0;
+	system("pause");
+	return RUN_ALL_TESTS();
 }
