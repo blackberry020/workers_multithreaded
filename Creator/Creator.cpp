@@ -11,11 +11,11 @@ int main(int argc, char** args)
     char* fileEmployees = args[1];
     Employee curEmployee;
 
-    std::ofstream fout(fileEmployees);
+    std::ofstream fout(fileEmployees, std::ios::binary);
 
     for (int i = 0; i < atoi(args[2]); i++) {
         std::cin >> curEmployee;
-        fout << curEmployee << '\n';
+        fout.write((char*)&curEmployee, sizeof(Employee));
     }
 
     fout.close();

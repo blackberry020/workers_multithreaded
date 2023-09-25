@@ -1,23 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <vector>
 
 #include "../employee.h"
-
-int getLastSpaceIndex(char* row) {
-    for (int i = strlen(row) - 1; i >= 0; i--) {
-        if (row[i] == ' ') return i;
-    }
-
-    return -1;
-}
-
-double getLastNumber(char* row) {
-    char number[10] = {0};
-    int numPos = getLastSpaceIndex(row);
-    strncpy_s(number, row + numPos, strlen(row) - numPos + 1);
-    return atof(number); //?
-};
 
 int main(int argc, char** args)
 {
@@ -33,13 +19,13 @@ int main(int argc, char** args)
     std::cout << "Enter the cost for 1 hour work" << std::endl;
     std::cin >> hourCost;
 
-    Employee employees[105];
+    std::vector<Employee> employees(cntWorkers);
 
     for (int i = 0; i < cntWorkers; i++) {
-        fin >> employees[i];
+        fin.read((char*)&employees[i], sizeof(Employee));
     }
 
-    std::sort(employees, employees + cntWorkers);
+    std::sort(employees.begin(), employees.end());
 
     for (int i = 0; i < cntWorkers; i++) {
         fout << employees[i] << " " << employees[i].hours * hourCost << '\n';

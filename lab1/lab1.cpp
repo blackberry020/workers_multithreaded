@@ -5,6 +5,7 @@
 #include <string>
 
 #include <gtest/gtest.h>
+#include "../employee.h"
 
 void runProcess(wchar_t* command) {
 
@@ -42,6 +43,20 @@ void printFileContent(std::wstring fileName) {
 	return;
 }
 
+void printBinFileContent(std::wstring fileName) {
+
+	std::ifstream fin(fileName, std::ios::binary);
+	Employee empl;
+
+	while (!fin.read((char*)&empl, sizeof(Employee)).eof()) {
+		std::wcout << empl << std::endl;
+	}
+
+	fin.close();
+
+	return;
+}
+
 TEST() {
 
 };
@@ -66,7 +81,7 @@ int main(int argc, char** args)
 
 	runProcess(finalCommand);
 
-	printFileContent(creatorFileName);
+	printBinFileContent(creatorFileName);
 
 	std::wcout << "Enter the name of the reporter file" << std::endl;
 	std::wstring reporterFileName;
