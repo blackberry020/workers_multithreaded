@@ -14,6 +14,11 @@ struct Employee
 		return os << employee.id << " " << employee.name << " " << employee.hours;
 	}
 
+	friend std::istream& operator >> (std::istream& in, Employee& person)
+	{
+		return os << employee.id << " " << employee.name << " " << employee.hours;
+	}
+
 	friend std::wistream& operator >> (std::wistream& in, Employee& person)
 	{
 		return in >> person.id >> person.name >> person.hours;

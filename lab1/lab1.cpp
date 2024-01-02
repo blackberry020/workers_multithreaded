@@ -7,6 +7,7 @@
 #include "../employee.h"
 
 #include <gtest/gtest.h>
+#include "../employee.h"
 
 void runProcess(wchar_t* command) {
 
@@ -49,20 +50,15 @@ void printTextFileContent(std::wstring fileName) {
 	return;
 }
 
-void printEmployeesFileContent(std::wstring fileName) {
+void printBinFileContent(std::wstring fileName) {
 
-	std::wifstream fin(fileName);
+	std::ifstream fin(fileName, std::ios::binary);
+	Employee empl;
 
-	if (!fin.is_open()) {
-		std::wcout << L"could not open the file " << fileName << std::endl;
-		return;
+	while (!fin.read((char*)&empl, sizeof(Employee)).eof()) {
+		std::wcout << empl << std::endl;
 	}
 
-	Employee curEmployee;
-
-	while (!fin.read( (wchar_t*)&curEmployee, sizeof(Employee)).eof()) {
-		std::wcout << curEmployee << std::endl;
-	}
 	fin.close();
 
 	return;
@@ -92,7 +88,7 @@ int main(int argc, char** args)
 
 	runProcess(finalCreatorCommand);
 
-	printEmployeesFileContent(creatorFileName);
+	printBinFileContent(creatorFileName);
 
 	std::wcout << "Enter the name of the reporter file" << std::endl;
 	std::wstring reporterFileName;
