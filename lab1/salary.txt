@@ -1,9 +1,3 @@
-<<<<<<< HEAD
 Report on file employees.bin
 1 Ilona 34 0
 2 Ilya 234 0
-=======
-Report on file prob2.bin
-0  -9.25596e+61 -2.12887e+63
--858993460  -9.25596e+61 -2.12887e+63
->>>>>>> master

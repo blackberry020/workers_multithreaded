@@ -4,9 +4,7 @@
 #include <fstream>
 #include <string>
 
-#include "../employee.h"
-
-#include <gtest/gtest.h>
+//#include <gtest/gtest.h>
 #include "../employee.h"
 
 void runProcess(wchar_t* command) {
@@ -32,15 +30,10 @@ void runProcess(wchar_t* command) {
 	return;
 }
 
-void printTextFileContent(std::wstring fileName) {
+void printFileContent(std::wstring fileName) {
 
 	std::wstring curRow;
 	std::wifstream fin(fileName);
-
-	if (!fin.is_open()) {
-		std::wcout << L"could not open the file " << fileName << std::endl;
-		return;
-	}
 
 	while (getline(fin, curRow)) {
 		std::wcout << curRow << std::endl;
@@ -64,14 +57,14 @@ void printBinFileContent(std::wstring fileName) {
 	return;
 }
 
-TEST() {
-
-};
+//TEST() {
+//
+//};
 
 int main(int argc, char** args)
 {
 
-	testing::InitGoogleTest(&argc, args);
+	//testing::InitGoogleTest(&argc, args);
 
 	std::wcout << "Enter the name of the creator file" << std::endl;
 	std::wstring creatorFileName;
@@ -84,9 +77,9 @@ int main(int argc, char** args)
 	std::wstring commandLine = L"Creator.exe ";
 	commandLine += creatorFileName + L" " + cntEmployees;
 
-	wchar_t* finalCreatorCommand = _wcsdup(commandLine.c_str());
+	wchar_t* finalCommand = _wcsdup(commandLine.c_str());
 
-	runProcess(finalCreatorCommand);
+	runProcess(finalCommand);
 
 	printBinFileContent(creatorFileName);
 
@@ -97,12 +90,13 @@ int main(int argc, char** args)
 	std::wstring reporterCommandLine = L"Reporter.exe ";
 	reporterCommandLine += reporterFileName + L" " + creatorFileName + L" " + cntEmployees;
 
-	wchar_t* finalReporterCommand = _wcsdup(reporterCommandLine.c_str());
+	wchar_t* finalCommand2 = _wcsdup(reporterCommandLine.c_str());
 
-	runProcess(finalReporterCommand);
+	runProcess(finalCommand2);
 
-	printTextFileContent(reporterFileName);
+	printFileContent(reporterFileName);
 
 	system("pause");
-	return RUN_ALL_TESTS();
+	return 0;
+	//return RUN_ALL_TESTS();
 }

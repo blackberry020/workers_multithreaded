@@ -8,8 +8,8 @@
 int main(int argc, char** args)
 {
 
-    std::wifstream fin(args[2]);
-    std::wofstream fout(args[1]);
+    std::ifstream fin(args[2]);
+    std::ofstream fout(args[1]);
 
     fout << "Report on file " << args[2] << '\n';
 

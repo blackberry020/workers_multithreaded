@@ -1,0 +1,4 @@
+Report on file input.txt
+1 ILona 34 34
+3 Meow 34 34
+2 Sasha 56 56
