@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 
-//#include <gtest/gtest.h>
+#include <gtest/gtest.h>
 #include "../employee.h"
 
 void runProcess(wchar_t* command) {
@@ -57,14 +57,31 @@ void printBinFileContent(std::wstring fileName) {
 	return;
 }
 
-//TEST() {
-//
-//};
+TEST(employeeSort, sortIsNeeded) {
+	std::vector<Employee> employees = { {1, "Betta", 34}, {2, "Alpha", 23} };
+	std::sort(employees.begin(), employees.end());
+	std::vector<Employee> expected = { {2, "Alpha", 23}, {1, "Betta", 34} };
+
+	ASSERT_EQ(employees.size(), expected.size());
+	for (size_t i = 0; i < employees.size(); ++i) {
+		EXPECT_EQ(employees[i], expected[i]);
+	}
+};
+
+TEST(employeeSort, alreadySorted) {
+	std::vector<Employee> employees = { {2, "Alpha", 23}, {1, "Betta", 34} };
+	std::sort(employees.begin(), employees.end());
+	std::vector<Employee> expected = { {2, "Alpha", 23}, {1, "Betta", 34} };
+
+	ASSERT_EQ(employees.size(), expected.size());
+	for (size_t i = 0; i < employees.size(); ++i) {
+		EXPECT_EQ(employees[i], expected[i]);
+	}
+};
 
 int main(int argc, char** args)
 {
-
-	//testing::InitGoogleTest(&argc, args);
+	testing::InitGoogleTest(&argc, args);
 
 	std::wcout << "Enter the name of the creator file" << std::endl;
 	std::wstring creatorFileName;
@@ -97,6 +114,6 @@ int main(int argc, char** args)
 	printFileContent(reporterFileName);
 
 	system("pause");
-	return 0;
-	//return RUN_ALL_TESTS();
+	//return 0;
+	return RUN_ALL_TESTS();
 }
